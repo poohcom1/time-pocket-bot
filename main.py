@@ -21,7 +21,7 @@ async def on_ready():
 
 @bot.command(name="online", brief="Checks status")
 async def online(ctx):
-    await ctx.send(f"SantaBot v0.15 Online\nPing: {round(bot.latency * 1000)}ms")
+    await ctx.send(f"Time Pocket Bot Online\nPing: {round(bot.latency * 1000)}ms")
 
 
 @bot.command(name="", description="")
