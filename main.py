@@ -94,6 +94,9 @@ async def schedule(ctx):
 
 @bot.event
 async def on_message(message):
+    if message.author.bot:
+        return
+    await message.channel.send(message.created_at)
 
     # on_message overrides @client.command events, so this is required
     await bot.process_commands(message)
