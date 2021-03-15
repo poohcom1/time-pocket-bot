@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-config.json
+# config.json
 test.py
 output/
 
