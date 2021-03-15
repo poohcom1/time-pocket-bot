@@ -7,16 +7,19 @@ from schedule_manager import *
 
 
 
-# Event data: [[Day, Start (hr), Start (min), duration (min), Name]]
+# Event data list: [[Day, Start (hr), Start (min), duration (min), Name]]
 def time_table(event_data: list, title="Schedule", 
                 sections=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], 
-                colors=['pink', 'lightgreen', 'lightblue', 'wheat', 'salmon'],
+                colors=['pink', 'lightgreen', 'lightblue', 'wheat', 'salmon', 'red', 'yellow'],
                 start_hour = 0, end_hour=24
                 ):
 
     fig = plt.figure(figsize=(10, 5.89))
 
+
     for event in event_data:
+        event[0] += 1
+
         room = event[0]-0.48
         start = event[1]+event[2]/60
         end = start+event[3]/60
@@ -49,6 +52,9 @@ def time_table(event_data: list, title="Schedule",
     ax2.set_xticklabels(sections)
     ax2.set_ylabel('Time')
 
+    save_name = 'output/{0}.png'.format(title)
+
     plt.title(title, y=1.07)
-    plt.savefig('{0}.png'.format(title), dpi=200)
+    plt.savefig(save_name, dpi=200)
+    return save_name
 
