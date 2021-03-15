@@ -1,6 +1,7 @@
 import discord.ext
 from discord.ext import commands, tasks
 import json
+from schedule_manager import *
 
 # Load bot token and prefix
 with open('config.json') as json_file:
@@ -11,6 +12,8 @@ with open('config.json') as json_file:
 
 # Define commands
 bot = commands.Bot(command_prefix=bot_prefix)
+
+schedule = generate_shedule()
 
 
 # Bot started
