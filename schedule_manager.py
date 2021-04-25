@@ -85,8 +85,10 @@ def schedule_to_event_data(schedule: list) -> list:
     # Final output
     event_data_list = []
 
+    b = 0
     # TODO: Finish this shit
     for i in range(len(schedule)):
+        b = b + 1
         found_events = []
 
         for j in range(len(schedule[i])):
@@ -106,13 +108,19 @@ def schedule_to_event_data(schedule: list) -> list:
                         current_events_time[k][1] += 15
         
         # On event removed (finished); search for events in current_events_time that is not in schedule
-        for event_time in current_events_time:
+        loop = len(current_events_time) - 1
+        while loop >= 0:
             # If this event has just been added
-            if event_time[0] in found_events:
+            if current_events_time[loop][0] in found_events:
+                loop = loop - 1
                 continue
             else:
-                event_data_list.append(schedule_event_to_timesable_event(event_time[0], i, event_time[1]))
-                current_events_time.remove(event_time)
+                print(found_events)
+                print(current_events_time)
+                print(f"{b} .... {current_events_time[loop][0]} ... {i} ... {current_events_time[loop][1]}")
+                event_data_list.append(schedule_event_to_timesable_event(current_events_time[loop][0], i, current_events_time[loop][1]))
+                current_events_time.remove(current_events_time[loop])
+                loop = loop - 1
 
     return event_data_list
 

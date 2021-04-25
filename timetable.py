@@ -39,24 +39,8 @@ def time_table(event_data: list, title="Schedule",
         # plot event name
         plt.text(room+0.48, (start+end)*0.5, eventName,
                  ha='center', va='center', fontsize=11)
-    """
-    # Set Axis
-    ax = fig.add_subplot(111)
-    ax.yaxis.grid()
-    ax.set_xlim(0.5, len(sections)+0.5)
-    ax.set_ylim(end_hour, start_hour)
-    ax.set_xticks(range(1, len(sections)+1))
-    ax.set_xticklabels(sections)
-    ax.set_ylabel('Time')
     
-    # Set Second Axis
-    ax2 = ax.twiny().twinx()
-    ax2.set_xlim(ax.get_xlim())
-    ax2.set_ylim(ax.get_ylim())
-    ax2.set_xticks(ax.get_xticks())
-    ax2.set_xticklabels(sections)
-    ax2.set_ylabel('Time')
-    """
+    
     save_name = 'output/{0}.png'.format(title)
 
     plt.title(title, y=1.07)

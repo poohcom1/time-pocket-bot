@@ -17,8 +17,12 @@ with open('config.json') as json_file:
     bot_token = data['token']
 
 
+#intent to get members
+intents = discord.Intents.default()
+intents.members = True
+
 # Define commands
-bot = commands.Bot(command_prefix=bot_prefix)
+bot = commands.Bot(command_prefix=bot_prefix, intents=intents)
 
 master_schedule = generate_shedule()
 
@@ -35,7 +39,36 @@ async def online(ctx):
 
 
 # ========================================= COMMANDS =========================================
-@bot.command(name="", description="")
+@bot.command(name="eventAdmin", description="")
+async def eventAdmin(ctx, username:str, discriminator:str, day: str, start_time:str, end_time:str, event_name="", priority=-1):
+    start = parse_time(start_time)
+    end = parse_time(end_time)
+
+    start_hour = start[0]
+    start_min = round_nearest(start[1],15)//15
+
+    end_hour = end[0]
+    end_min = round_nearest(end[1],15)//15
+
+    day_index = parse_day(day)*24*4
+
+    start_index = start_hour*4 + start_min + day_index
+    end_index = end_hour*4 + end_min + day_index
+
+    user = discord.utils.get(bot.get_all_members(), name=username , discriminator=discriminator)
+
+    if(user == None):
+        await ctx.send(f"User {username} with discriminator {discrim} not found!")
+        return
+
+    userid = discord.utils.get(bot.get_all_members(), name=username , discriminator=discriminator).id
+
+    name = username + "#" + str(userid)
+
+    add_event(master_schedule, start_index, end_index, name, event_name, priority)
+    await ctx.send(f"Added {event_name} for {username}")
+
+@bot.command(name="event", description="")
 async def event(ctx, day: str, start_time:str, end_time:str, event_name="", priority=-1):
     start = parse_time(start_time)
     end = parse_time(end_time)
@@ -53,10 +86,7 @@ async def event(ctx, day: str, start_time:str, end_time:str, event_name="", prio
 
     name = ctx.author.name + "#" + str(ctx.author.id)
 
-    event = [ctx.author.id, event_name, priority]
-
     add_event(master_schedule, start_index, end_index, name, event_name, priority)
-    print(master_schedule)
     await ctx.send(f"Added {event_name} for {ctx.author.name}")
     
 #region Command Parsing
@@ -85,7 +115,9 @@ async def schedule(ctx):
         # do expensive stuff here
         await asyncio.sleep(0.1)
     title = "Schedule"
+    print(master_schedule)
     event_data = schedule_to_event_data(master_schedule)
+    print(event_data)
     file_name = time_table(event_data, title=title)
     await ctx.send(file=discord.File(file_name))
 
@@ -96,7 +128,7 @@ async def schedule(ctx):
 async def on_message(message):
     if message.author.bot:
         return
-    await message.channel.send(message.created_at)
+    #await message.channel.send(message.created_at)
 
     # on_message overrides @client.command events, so this is required
     await bot.process_commands(message)
