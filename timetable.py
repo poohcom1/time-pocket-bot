@@ -20,13 +20,14 @@ def time_table(event_data: list, title="Schedule",
     plt.ylim(0,24)
     plt.xlim(0,8)
     plt.xticks([i for i in range(15)],['', 'Sunday' ,'', 'Monday' ,'', 'Tuesday' ,'', 'Wednesday' ,'', 'Thursday' ,'', 'Friday' ,'', 'Saturday' ,''])
-    plt.yticks([i for i in range(25)])
-    plt.grid()
+    plt.yticks([i for i in range(25)],[(24-i) for i in range(25)])
+    plt.grid(axis='y')
 
     for event in event_data:
         room = event[0]*2 + 1
         start = event[1]+event[2]/60
-        end = start+event[3]/60
+        start = 24 - start
+        end = start-event[3]/60
         eventName = event[4]
 
         # plot event
