@@ -22,7 +22,7 @@ PRIORITY = {
 # Axis 3: Event array: [user_id, name, priority]
 def generate_shedule() -> list:
     TIME_SLOTS = 7 * 24 * 4
-    return [[[0 for k in range(0)] for j in range(0)] for i in range(TIME_SLOTS)]
+    return [[] for i in range(TIME_SLOTS)]
 
 
 def add_event(schedule: list, start_index: int, end_index: int, user_id: str, name: str, priority: int):
@@ -96,7 +96,7 @@ def schedule_to_event_data(schedule: list) -> list:
             # On new event added
             if not any(event in events_time for events_time in current_events_time):
                 #print("Added", event)
-                current_events_time.append([event, 0])
+                current_events_time.append([event, 15])
             else:
             # On event exists
                 
