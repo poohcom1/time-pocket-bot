@@ -115,9 +115,9 @@ async def schedule(ctx):
         # do expensive stuff here
         await asyncio.sleep(0.1)
     title = "Schedule"
-    print(master_schedule)
+    #print(master_schedule)
     event_data = schedule_to_event_data(master_schedule)
-    print(event_data)
+    #print(event_data)
     file_name = time_table(event_data, title=title)
     await ctx.send(file=discord.File(file_name))
 
