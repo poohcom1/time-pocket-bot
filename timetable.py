@@ -16,17 +16,22 @@ def time_table(event_data: list, title="Schedule",
 
     fig = plt.figure(figsize=(10, 5.89))
 
+    #decorate the graph
+    plt.ylim(0,24)
+    plt.xlim(0,8)
+    plt.xticks([i for i in range(15)],['', 'Sunday' ,'', 'Monday' ,'', 'Tuesday' ,'', 'Wednesday' ,'', 'Thursday' ,'', 'Friday' ,'', 'Saturday' ,''])
+    plt.yticks([i for i in range(25)],[(24-i) for i in range(25)])
+    plt.grid(axis='y')
 
     for event in event_data:
-        event[0] += 1
-
-        room = event[0]-0.48
+        room = event[0]*2 + 1
         start = event[1]+event[2]/60
-        end = start+event[3]/60
+        start = 24 - start
+        end = start-event[3]/60
         eventName = event[4]
 
         # plot event
-        plt.fill_between([room, room+0.96], [start, start], [end, end],
+        plt.fill_between([room-1, room+1], [start, start], [end, end],
                          color=colors[int(event[0]-1)], edgecolor='k', linewidth=0.5)
         # plot beginning time
         plt.text(room+0.02, start+0.05,
@@ -34,7 +39,7 @@ def time_table(event_data: list, title="Schedule",
         # plot event name
         plt.text(room+0.48, (start+end)*0.5, eventName,
                  ha='center', va='center', fontsize=11)
-
+    """
     # Set Axis
     ax = fig.add_subplot(111)
     ax.yaxis.grid()
@@ -43,7 +48,7 @@ def time_table(event_data: list, title="Schedule",
     ax.set_xticks(range(1, len(sections)+1))
     ax.set_xticklabels(sections)
     ax.set_ylabel('Time')
-
+    
     # Set Second Axis
     ax2 = ax.twiny().twinx()
     ax2.set_xlim(ax.get_xlim())
@@ -51,7 +56,7 @@ def time_table(event_data: list, title="Schedule",
     ax2.set_xticks(ax.get_xticks())
     ax2.set_xticklabels(sections)
     ax2.set_ylabel('Time')
-
+    """
     save_name = 'output/{0}.png'.format(title)
 
     plt.title(title, y=1.07)
